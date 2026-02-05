@@ -1,0 +1,4 @@
+[2026-02-04 22:21:41,919] 24 root - INFO - Entered the data ingestion method/component
+[2026-02-04 22:21:41,923] 31 root - INFO - Read the dataset as dataframe from: /Users/chandralekharavikanti/Documents/projects/notebook/stud.csv
+[2026-02-04 22:21:41,925] 39 root - INFO - Train-test split initiated
+[2026-02-04 22:21:41,928] 45 root - INFO - Ingestion of data is completed
