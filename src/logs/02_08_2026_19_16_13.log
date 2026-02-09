@@ -1,0 +1,7 @@
+[2026-02-08 19:16:13,231] 26 root - INFO - Entered the data ingestion method/component
+[2026-02-08 19:16:13,238] 33 root - INFO - Read the dataset as dataframe from: /Users/chandralekharavikanti/Documents/projects/notebook/stud.csv
+[2026-02-08 19:16:13,240] 41 root - INFO - Train-test split initiated
+[2026-02-08 19:16:13,243] 47 root - INFO - Ingestion of data is completed
+[2026-02-08 19:16:13,244] 90 root - INFO - Read train and test data completed
+[2026-02-08 19:16:13,244] 91 root - INFO - Obtaining preprocessing object
+[2026-02-08 19:16:13,245] 108 root - INFO - Applying preprocessing object on training and testing dataframes
