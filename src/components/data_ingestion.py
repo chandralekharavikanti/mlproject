@@ -8,6 +8,7 @@ from sklearn.model_selection import train_test_split
 from src.exception import CustomException
 from src.logger import logging
 from src.components.data_transformation import DataTransformation
+from src.components.model_trainer import ModelTrainer
 
 
 def get_project_root() -> str:
@@ -36,17 +37,17 @@ class DataIngestion:
             df = pd.read_csv(csv_path)
             logging.info(f"Read the dataset as dataframe from: {csv_path}")
 
-            # Normalize columns once, early (spaces + slashes)
+            # Normalize columns (spaces + slashes)
             df.columns = (
                 df.columns.str.strip()
                 .str.replace(" ", "_")
                 .str.replace("/", "_")
             )
 
-            #  Ensure artifacts directory exists (absolute)
+            # Ensure artifacts directory exists
             os.makedirs(self.ingestion_config.artifacts_dir, exist_ok=True)
 
-            # Save raw
+            # Save raw data
             df.to_csv(self.ingestion_config.raw_data_path, index=False, header=True)
 
             logging.info("Train-test split initiated")
@@ -68,10 +69,24 @@ class DataIngestion:
 
 
 if __name__ == "__main__":
-    obj = DataIngestion()
-    train_data, test_data = obj.initiate_data_ingestion()
+    try:
+        obj = DataIngestion()
+        train_data, test_data = obj.initiate_data_ingestion()
 
-    print("calling datatransformation")
+        print("calling data transformation...")
+        data_transformation = DataTransformation()
+        train_arr, test_arr, _ = data_transformation.initiate_data_transformation(train_data, test_data)
 
-    data_transformation = DataTransformation()
-    data_transformation.initiate_data_transformation(train_data, test_data)
+        print("calling model trainer...")
+        modeltrainer = ModelTrainer()
+
+        # IMPORTANT: capture return value and print it
+        r2 = modeltrainer.initiate_model_trainer(train_arr, test_arr)
+        print(f"R2 Score: {r2}")
+
+        print("pipeline finished successfully")
+
+    except Exception as e:
+        # If something fails, you will SEE it in terminal
+        print("Pipeline failed:", e)
+        raise

@@ -102,10 +102,10 @@ class DataTransformation:
                     f"Target column '{target_column_name}' not found. Columns: {train_df.columns.tolist()}"
                 )
 
-            input_feature_train_df = train_df.drop(columns=[target_column_name], axis=1)
+            input_feature_train_df = train_df.drop(columns=[target_column_name])
             target_feature_train_df = train_df[target_column_name]
 
-            input_feature_test_df = test_df.drop(columns=[target_column_name], axis=1)
+            input_feature_test_df = test_df.drop(columns=[target_column_name])
             target_feature_test_df = test_df[target_column_name]
 
             logging.info("Applying preprocessing object on training and testing dataframes")
