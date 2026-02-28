@@ -1,41 +1,36 @@
 import os
 import sys
-
-import numpy as np
-import pandas as pd 
-import dill 
-
-from sklearn.metrics import r2_score
-from src.exception import CustomException
-
-import os
 import pickle
+from sklearn.metrics import r2_score
+
 
 def save_object(file_path: str, obj) -> None:
-    os.makedirs(os.path.dirname(file_path), exist_ok=True)
-    with open(file_path, "wb") as f:
-        pickle.dump(obj, f)
+    try:
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        with open(file_path, "wb") as f:
+            pickle.dump(obj, f)
+    except Exception as e:
+        from src.exception import CustomException
+        raise CustomException(e, sys)
 
-from sklearn.metrics import r2_score
 
-def evaluate_models(X_train, y_train, X_test, y_test, models):
+def load_object(file_path: str):
+    try:
+        with open(file_path, "rb") as file_obj:
+            return pickle.load(file_obj)
+    except Exception as e:
+        from src.exception import CustomException
+        raise CustomException(e, sys)
+
+
+def evaluate_models(X_train, y_train, X_test, y_test, models: dict):
     try:
         report = {}
-
         for name, model in models.items():
-            
             model.fit(X_train, y_train)
-
-            
-            y_train_pred = model.predict(X_train)
             y_test_pred = model.predict(X_test)
-
-            train_score = r2_score(y_train, y_train_pred)
-            test_score = r2_score(y_test, y_test_pred)
-
-            report[name] = test_score
-
+            report[name] = r2_score(y_test, y_test_pred)
         return report
-
     except Exception as e:
+        from src.exception import CustomException
         raise CustomException(e, sys)
